@@ -1,0 +1,16 @@
+The resulting product must have
+	* Trophy winners are identified
+		* Highlighted and Bolded
+	* Scholarship winners identified
+		- How would you like scholarship winnders identified? Do you have an example?
+	* Upset winners identified
+		- see Wisconsin Dells
+	* Grand Prix results
+		- see a Grand Prix result: see Grand Prix 8 - Random Lake
+	* Date of the Tournament
+	* Name of the Tournament Director
+	* Number of Tournament Participants
+	* Total number of participants to date
+	* Recognize players that were signed up but did not participate
+	* Take any number of result .csv files and combine them into a single .pdf result
+		- For each file given it should add 1 - * number of pages to display thos results
