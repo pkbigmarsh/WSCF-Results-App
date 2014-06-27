@@ -1,31 +1,8 @@
-import os
-from PDFGen import *
-
-# font_varients = ("'Calibri Regular.ttf'", "'Calibri Bold.ttf'")
-# folder = 'C:/Windows/Fonts/Calibri/'
-# for varient in font_varients:
-#     pdfmetrics.registerFont(TTFont(varient, os.path.join(folder, varient)))
-
-individualFilePath = '../Info/tournamentresultsposting/individual_k12.TXT'
-outputFileName = "test.pdf"
-
-tournamentName = "Fond Du Lac Stem Academy"
-tournamentDate = "1-Mar-14"
-division = "K3"
-headTournamentDirector = "Charles Windsor"
-headTournamentHeader = "TD: "
-
-numberOfParticipants = "77"
-numOfParticipantsToDate = "2,535"
-
-myCanvas = canvas.Canvas(outputFileName, pagesize=(WIDTH, HEIGHT))
-
-printResultHeader(myCanvas, tournamentName, tournamentDate, numberOfParticipants,
-    division, headTournamentDirector, numOfParticipantsToDate)
-
-printIndividual(myCanvas, INCH, 6.5 * INCH, individualFilePath)
-
-myCanvas.save()
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics 
+from reportlab.pdfbase.ttfonts import TTFont  
+from Constants import *
+from CSVReader import *
 
 def printIndividual(myCanvas, left, top, filepath):
     columns = [
@@ -98,7 +75,7 @@ def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, divisio
 
     header[0] += INCH
 
-    myCanvas.drawString(header[0], header[1], "TD: " + headTournamentDirector)
+    myCanvas.drawString(header[0], header[1], "TD: " + tournyDirector)
 
     header[0] = WIDTH - INCH * 2
 
@@ -108,4 +85,3 @@ def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, divisio
 
     myCanvas.drawRightString(header[0], header[1], numParticipantsToDate)
 
-    

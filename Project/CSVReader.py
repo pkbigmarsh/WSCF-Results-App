@@ -18,11 +18,11 @@ class CSVReader():
         if (newLine is None or not newLine):
             return None
         newRow = safeSplit(newLine, ",")
-        newMap = {}
+        return_values = []
         for i in range(0, len(newRow)):
-            newMap[self.headers[i]] = newRow[i].strip().rstrip().strip("\"").rstrip("\"")
+            return_values.append(newRow[i].strip().rstrip().strip("\"").rstrip("\""))
 
-        return newMap
+        return return_values
 
     def getNextAsString(self):
         row = self.getNext()
@@ -30,9 +30,15 @@ class CSVReader():
             return None
 
         return_str = ""
-        for key in self.headers:
-            return_str += row[key] + " "
+        for value in row:
+            return_str += value + " "
         return return_str
+
+    def getItem(self, header, row):
+        for i in range(0, len(row)):
+            if(self.headers[i] == header):
+                return row[i]
+        return None
 
 def safeSplit(string, delimiter):
     start = 0
