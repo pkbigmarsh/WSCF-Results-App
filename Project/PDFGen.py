@@ -45,6 +45,78 @@ def printIndividual(myCanvas, left, top, filepath):
 
         next = result.getNext()
 
+def printTeamHeader(myCanvas, division):
+    left = MARGIN_LEFT + INCH * 2
+    top = MARGIN_TOP
+
+    myCanvas.setFillColorRGB(0,0,0)
+    myCanvas.setFont("Helvetica", 16 * POINT)
+    myCanvas.drawString(left, top, division)
+
+    left -= .5 * INCH
+    top -= 17 * POINT
+    myCanvas.setFontSize(12 * POINT)
+    myCanvas.drawString(left, top, "Team Standings")
+
+def printTeamStandings(myCanvas, startTop, filepath):
+    myCanvas.setFont("Helvetica", 11 * POINT)
+
+    y = startTop
+    x = MARGIN_LEFT
+
+    teamResult = CSVReader(filepath)
+
+    columns = [
+        x,
+        x + INCH * .5,
+        x + INCH * 6.25,
+        x + INCH * 7.00,
+        x + INCH * 7.75,
+        x + INCH * 8.50,
+        x + INCH * 9.25
+    ]
+    
+    ignore          = 0
+    playerCount     = 0
+
+    for i in range(0, len(teamResult.headers)):
+        if(teamResult.headers[i] not in IGNORE_TEAM):
+            myCanvas.drawString(columns[i - ignore], y, teamResult.headers[i])
+        else:
+            ignore += 1
+
+    y -= 12 * POINT
+
+    ignore = 0
+
+    line = teamResult.getNext()
+    while(line != None):
+        if(y < MARGIN_BOTTOM):
+            y = MARGIN_TOP
+            myCanvas.showPage()
+
+        
+        if(line[0] == ""):
+            playerCount += 1
+        else:
+            playerCount = 0
+
+        if(playerCount > 4):
+            line = teamResult.getNext()
+            continue
+
+        ignore = 0
+        for i in range(0, len(line)):
+            if(teamResult.headers[i] in IGNORE_TEAM):
+                ignore += 1
+            else:
+                myCanvas.drawString(columns[i - ignore], y, line[i])
+
+        y -= 12 * POINT
+
+        line = teamResult.getNext()
+
+
 def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, division, tournyDirector, numParticipantsToDate):
     myCanvas.setFillColorRGB(0,0,0)
 
