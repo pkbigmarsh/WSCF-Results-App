@@ -82,7 +82,7 @@ class MiscPlayerIdentificationScreen(Screen):
             self.player_list.add_widget(self.newPlayerLabel(self.playerIdentList[i].name))
 
     def leave_screen(self):
-        self.manager.player_identification_list.clear()
+        self.manager.player_identification_list = []
         for playerTrip in identification_triples:
             player              = PlayerIdentification()
             

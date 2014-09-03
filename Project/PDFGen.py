@@ -164,7 +164,6 @@ def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, divisio
     myCanvas.drawRightString(header[0], header[1], PARTICIPANTS_STR)
 
     header[0] += INCH
-    Logger.info("ResultHeader: Num Players: " + str(numParticipants))
     myCanvas.drawRightString(header[0], header[1], numParticipants)
 
     header[0] = INCH
