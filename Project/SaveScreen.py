@@ -1,7 +1,6 @@
 from kivy.uix.widget import Widget
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import Screen
-from kivy.properties import StringProperty
 from kivy.logger import Logger
 from kivy.graphics import Canvas
 
@@ -9,22 +8,11 @@ from PDFGen import *
 from util import *
 
 from SaveDialog import *
-from MyGlobals import * 
 
-from HeaderScreen import *
 
 import os
 
 class SaveScreen(Screen):
-    tourny_name               = ""
-    tourny_date               = ""
-    head_td_nam               = ""
-    num_players               = ""
-    num_players_to_date       = ""
-    num_indi_trophy_winners   = ""
-    num_team_trophy_winners   = ""
-    color_indi_trophies       = ""
-    color_team_trophies       = ""
 
     def enter_screen(self):
         pass
@@ -46,22 +34,22 @@ class SaveScreen(Screen):
         myCanvas = canvas.Canvas(filepath, pagesize=(WIDTH, HEIGHT))
 
         first = True
-        for result in i_file_results:
+        for result in self.manager.i_file_results:
             if first == True:
                 first = False
-                printResultHeader(myCanvas, tournament_name, tournament_date, num_players, result.division, head_td_name, num_players_to_date)
+                printResultHeader(myCanvas, self.manager.tournament_name, self.manager.tournament_date, self.manager.num_players, result.division, self.manager.head_td_name, self.manager.num_players_to_date)
 
-                printIndividual(myCanvas, INCH, 6.5 * INCH, result.id, num_indi_trophy_winners, indi_trophy_highlight)
+                printIndividual(myCanvas, INCH, 6.5 * INCH, result.id, self.manager.num_indi_trophy_winners, self.manager.indi_trophy_highlight)
 
             else:
                 printIndividualHeader(myCanvas, result.division)
-                printIndividual(myCanvas, INCH, MARGIN_TOP - 32, result.id, num_indi_trophy_winners, indi_trophy_highlight)
+                printIndividual(myCanvas, INCH, MARGIN_TOP - 32, result.id, self.manager.num_indi_trophy_winners, self.manager.indi_trophy_highlight)
 
             myCanvas.showPage()
 
-        for result in t_file_results:
+        for result in self.manager.t_file_results:
             printTeamHeader(myCanvas, result.division)
-            printTeamStandings(myCanvas, MARGIN_TOP - 32, result.id, num_team_trophy_winners, team_trophy_highlight)
+            printTeamStandings(myCanvas, MARGIN_TOP - 32, result.id, self.manager.num_team_trophy_winners, self.manager.team_trophy_highlight)
             myCanvas.showPage()
 
         myCanvas.save()
