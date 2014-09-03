@@ -3,7 +3,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 import time
 
 from kivy.lang import Builder
-from kivy.properties import NumericProperty
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 
@@ -32,8 +31,8 @@ class DataScreenManager(ScreenManager):
     num_players                 = StringProperty(None)
     num_players_to_date         = StringProperty(None)
 
-    num_indi_trophy_winners     = NumericProperty(0)
-    num_team_trophy_winners     = NumericProperty(0)
+    num_indi_trophy_winners     = StringProperty("0")
+    num_team_trophy_winners     = StringProperty("0")
     indi_trophy_highlight       = ListProperty([])
     team_trophy_highlight       = ListProperty([])
 
