@@ -29,41 +29,41 @@ class HeaderScreen(Screen):
     current_color_label             = ObjectProperty(None)
 
     def enter_screen(self):
-        if num_players == None:
+        if self.manager.num_players == None:
             count = 0
-            for result_file in i_file_results:
+            for result_file in self.manager.i_file_results:
                 count += file_length(result_file.id) - 1 # I need the -1 to counteract the header in a csv file
 
-            num_players = str(count)
+            self.manager.num_players = str(count)
 
-        if num_players_to_date == None:
+        if self.manager.num_players_to_date == None:
             try:
                 num_players_file = open('./Number_of_players_to_date.txt')
-                num_players_to_date = str(int(float(num_players_file.readline())) + int(float(num_players)))
+                self.manager.num_players_to_date = str(int(float(num_players_file.readline())) + int(float(self.manager.num_players)))
             except  IOError:
-                num_players_to_date = "Could not open Number_of_players_to_date.txt. Count lost"
+                self.manager.num_players_to_date = "Could not open Number_of_players_to_date.txt. Count lost"
 
 
-        self.input_tourny_name.text             = tourny_name
-        self.input_tourny_date.text             = tourny_date
-        self.input_head_td_nam.text             = head_td_nam
-        self.input_num_players.text             = num_players
-        self.input_num_players_to_date.text     = num_players_to_date
-        self.input_num_indi_trophy_winners.text = num_indi_trophy_winners
-        self.input_num_team_trophy_winners.text = num_team_trophy_winners
+        self.input_tourny_name.text             = self.manager.tournament_name
+        self.input_tourny_date.text             = self.manager.tournament_date
+        self.input_head_td_nam.text             = self.manager.head_td_name
+        self.input_num_players.text             = self.manager.num_players
+        self.input_num_players_to_date.text     = self.manager.num_players_to_date
+        self.input_num_indi_trophy_winners.text = self.manager.num_indi_trophy_winners
+        self.input_num_team_trophy_winners.text = self.manager.num_team_trophy_winners
 
     def leave_screen(self):
-        tourny_name                 = self.input_tourny_name.text
-        tourny_date                 = self.input_tourny_date.text
-        head_td_nam                 = self.input_head_td_nam.text
-        num_players                 = self.input_num_players.text
-        num_players_to_date         = self.input_num_players_to_date.text
+        self.manager.tournament_name            = self.input_tourny_name.text
+        self.manager.tournament_date            = self.input_tourny_date.text
+        self.manager.head_td_name               = self.input_head_td_nam.text
+        self.manager.num_players                = self.input_num_players.text
+        self.manager.num_players_to_date        = self.input_num_players_to_date.text
 
-        num_indi_trophy_winners     = self.input_num_indi_trophy_winners.text
-        num_team_trophy_winners     = self.input_num_team_trophy_winners.text   
+        self.manager.num_indi_trophy_winners    = self.input_num_indi_trophy_winners.text
+        self.manager.num_team_trophy_winners    = self.input_num_team_trophy_winners.text   
 
-        color_indi_trophies     = self.input_color_indi_trophies.col
-        color_team_trophies     = self.input_color_team_trophies.col
+        self.manager.indi_trophy_highlight      = self.input_color_indi_trophies.col
+        self.manager.team_trophy_highlight      = self.input_color_team_trophies.col
 
     def choose_color(self, _input):
         content = TrophyColorPicker(done=self.color_selected)
