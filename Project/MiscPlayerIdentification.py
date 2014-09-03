@@ -30,18 +30,14 @@ class MiscPlayerIdentificationScreen(Screen):
 
     playerIdentList     = []
 
-    i_file_results      = []
-
-
     def enter_screen(self):
         self.player_list.clear_widgets()
         self.selection_list.clear_widgets()
         self.description_list.clear_widgets()
         self.color_list.clear_widgets()
         all_players = []
-        self.i_file_results = DivisionScreen.i_file_results
 
-        for resultFile in self.i_file_results:
+        for resultFile in self.manager.i_file_results:
             reader = CSVReader(resultFile.id)
             newLine = reader.getNext()
             while newLine != None:
@@ -86,6 +82,7 @@ class MiscPlayerIdentificationScreen(Screen):
             self.player_list.add_widget(self.newPlayerLabel(self.playerIdentList[i].name))
 
     def leave_screen(self):
+        self.manager.player_identification_list.clear()
         for playerTrip in identification_triples:
             player              = PlayerIdentification()
             
@@ -93,7 +90,7 @@ class MiscPlayerIdentificationScreen(Screen):
             player.description  = playerTrip.description.text
             player.col          = playerTrip.color.col
 
-            self.playerIdentList.append(player)
+            self.manager.player_identification_list.append(player)
 
     def move_right(self):
         global current_selection
