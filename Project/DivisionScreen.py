@@ -22,22 +22,22 @@ class DivisionScreen(Screen):
         self.team_files.clear_widgets()
         self.team_inputs.clear_widgets()
 
-        if len(i_file_results) == 0:
+        if len(self.manager.i_file_results) == 0:
             self.indi_files.add_widget(divisionLabel("No Individual Result files loaded"))
 
-        if len(t_file_results) == 0:
+        if len(self.manager.t_file_results) == 0:
             self.team_files.add_widget(divisionLabel("No Team Result files loaded"))
 
 
         index = 0
-        for result in i_file_results:
+        for result in self.manager.i_file_results:
             self.indi_files.add_widget(divisionLabel(result.name))
 
             self.indi_inputs.add_widget(divisionInput(result.division, index))
             index += 1
 
         index = 0
-        for result in t_file_results:
+        for result in self.manager.t_file_results:
             self.team_files.add_widget(divisionLabel(result.name))
 
             self.team_inputs.add_widget(divisionInput(result.division, index))
@@ -45,10 +45,10 @@ class DivisionScreen(Screen):
 
     def update_file_results(self):
         for _input in self.team_inputs.children:
-            t_file_results[int(_input.id)].name = _input.text
+            self.manager.t_file_results[int(_input.id)].name = _input.text
 
         for _input in self.indi_inputs.children:
-            i_file_results[int(_input.id)].name = _input.text
+            self.manager.i_file_results[int(_input.id)].name = _input.text
 
 def divisionInput(startingText, index):
     textInput = SimpleInput()
