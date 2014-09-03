@@ -3,8 +3,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont  
 from Constants import *
 from CSVReader import *
+from kivy.logger import Logger
 
-def printIndividual(myCanvas, left, top, filepath):
+def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_highlight):
     columns = [
     .20 * INCH,
     .5 * INCH,
@@ -31,11 +32,24 @@ def printIndividual(myCanvas, left, top, filepath):
 
     y -= 12 * POINT
 
+    num_trophies = 0
     next = result.getNext()
     while(next != None):
         if (y < (.5 * INCH)):
             y = top
             myCanvas.showPage()
+
+        if num_trophies < num_trophy_winners:
+            num_trophies += 1
+            myCanvas.setStrokeColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
+            myCanvas.setFillColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
+            myCanvas.rect(columns[0], y - 12, columns[6] - columns[6], 12, 1, 1)
+
+
+            myCanvas.setStrokeColorRGB(0, 0, 0)
+            myCanvas.setFillColorRGB(0, 0, 0)
+
+
 
         status = result.getItem("St", next)
         if(status != None and status != "Out"):
@@ -58,7 +72,20 @@ def printTeamHeader(myCanvas, division):
     myCanvas.setFontSize(12 * POINT)
     myCanvas.drawString(left, top, "Team Standings")
 
-def printTeamStandings(myCanvas, startTop, filepath):
+def printIndividualHeader(myCanvas, division):
+    left = MARGIN_LEFT + INCH * 2
+    top = MARGIN_TOP
+
+    myCanvas.setFillColorRGB(0,0,0)
+    myCanvas.setFont("Helvetica", 16 * POINT)
+    myCanvas.drawString(left, top, division)
+
+    left -= .5 * INCH
+    top -= 17 * POINT
+    myCanvas.setFontSize(12 * POINT)
+    myCanvas.drawString(left, top, "Individual Standings")
+
+def printTeamStandings(myCanvas, startTop, filepath, num_trophy_winners, trophy_highlight):
     myCanvas.setFont("Helvetica", 11 * POINT)
 
     y = startTop
@@ -137,7 +164,7 @@ def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, divisio
     myCanvas.drawRightString(header[0], header[1], PARTICIPANTS_STR)
 
     header[0] += INCH
-
+    Logger.info("ResultHeader: Num Players: " + str(numParticipants))
     myCanvas.drawRightString(header[0], header[1], numParticipants)
 
     header[0] = INCH

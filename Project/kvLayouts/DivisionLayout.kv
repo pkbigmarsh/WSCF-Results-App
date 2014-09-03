@@ -1,0 +1,80 @@
+#:kivy 1.8.0
+
+<DivisionScreen>:
+	on_enter: root.update_information()
+	on_leave: root.update_file_results()
+
+	padding: 2
+	team_files: team_files
+	team_inputs: team_inputs
+
+	indi_files: indi_files
+	indi_inputs: indi_inputs
+
+	BoxLayout:
+		size: root.size
+		post: root.pos
+		orientation: 'horizontal'
+
+		ControlButtons:
+			size_hint: (.2, 1)
+			SimpleButton:
+				text: 'Back'
+				on_release: root.manager.current = root.manager.previous()
+
+			SimpleButton:
+				text: 'Next'
+				on_release: root.manager.current = root.manager.next()
+
+		DivisionTypeContainer:
+			FileLabel:
+				text: "Individuals"
+
+			DivisionInputContainer:
+				DivisionLabelList:
+					id: indi_files
+
+				DivisionInputList:
+					id: indi_inputs
+
+		DivisionTypeContainer:
+			FileLabel:
+				text: "Individuals"
+
+			DivisionInputContainer:
+				DivisionLabelList:
+					id: team_files
+
+				DivisionInputList:
+					id: team_inputs
+
+<DivisionFiles@StackLayout>:
+	orientation: 'lr-tb'
+	padding: 10
+	spacing: 10
+
+<DivisionLabelList@DivisionFiles>:
+	SimpleLabel:
+		text: "File Name"
+		font_size: 17
+
+<DivisionInputList@DivisionFiles>:
+	SimpleLabel:
+		text: "Division"
+		font_size: 17
+
+<DivisionTypeContainer@BoxLayout>:
+	padding: 2
+	spacing: 10
+	orientation: 'vertical'
+
+<DivisionInputContainer@BoxLayout>:
+	padding: 2
+	spacing: 2
+	canvas.before:
+		Color:
+			rgba: .7,.7,.7,1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+    
