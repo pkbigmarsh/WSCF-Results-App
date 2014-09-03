@@ -1,0 +1,53 @@
+#:kivy 1.8.0
+
+<ControlButtons@BoxLayout>:
+	size_hint: (.2, 1)
+	orientation: 'vertical'
+	padding: 10
+	spacing: 50
+
+<SimpleButton@Button>:
+	size_hint: (1, .2)
+	font_size: 12
+	text_size: self.size
+	valign: 'middle'
+	halign: 'center'
+
+<SimpleLabel@Label>:
+	color: [0,0,0,1]
+    font_size: 12
+    size_hint_y: None
+    height: 30
+
+<SimpleInput@TextInput>:
+    size_hint_y: None
+    height: 30
+    multiline: False
+
+<TopLabel@Label>:
+	size_hint: (1, None)
+	height: 30
+	font_size: 16
+	text_size: self.size
+	valign: 'top'
+	halign: 'center'
+	shorten: True
+
+<ColorButton@Button>
+	canvas:
+		Color:
+			rgba: self.col
+		Rectangle:
+            pos: self.pos
+            size: self.size
+
+        Color:
+        	rgb: (1, 1, 1)
+        Rectangle: 
+            pos: (self.x + 10, self.y + self.height / 4)
+            size: self.texture_size
+            texture: self.texture
+
+	size_hint: (1, None)
+	height: 30
+	text: 'click to change'

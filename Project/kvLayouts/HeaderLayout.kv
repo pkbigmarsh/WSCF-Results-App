@@ -1,0 +1,113 @@
+#:kivy 1.8.0
+
+<HeaderScreen>:
+	on_enter: root.enter_screen()
+	on_leave: root.leave_screen()
+
+	padding: 2
+
+	input_tourny_name: input_tourny_name
+	input_tourny_date: input_tourny_date
+	input_head_td_nam: input_head_td_nam
+	input_num_players: input_num_players
+	input_num_players_to_date: input_num_players_to_date
+
+	input_num_indi_trophy_winners: input_num_indi_trophy_winners
+	input_num_team_trophy_winners: input_num_team_trophy_winners
+
+	input_color_indi_trophies: input_color_indi_trophies
+	input_color_team_trophies: input_color_team_trophies
+
+	BoxLayout:
+		size: root.size
+		pos: root.pos
+		orientation: 'horizontal'
+		padding: 10
+		spacing: 20
+
+		ControlButtons:
+			size_hint: (.2, 1)
+			SimpleButton:
+				text: 'Back'
+				on_release: root.manager.current = root.manager.previous()
+
+			SimpleButton:
+				text: 'Next'
+				on_release: root.manager.current = root.manager.next()
+
+		BoxLayout:
+			orientation: 'horizontal'
+			padding: 2
+			spacing: 2
+			canvas.before:
+				Color:
+					rgba: .7,.7,.7,1
+				Rectangle:
+					pos: self.pos
+					size: self.size
+
+			StackLayout:
+				orientation: 'lr-tb'
+				padding: 10
+				spacing: 10
+
+				SimpleLabel:
+					text: 'Tournament Name:'
+
+				SimpleLabel:
+					text: 'Tournament Date:'
+
+				SimpleLabel:
+					text: 'Head TD Name:'
+
+				SimpleLabel:
+					text: 'Number of Participants:'
+
+				SimpleLabel:
+					text: 'Participants to Date:'
+
+				SimpleLabel:
+					text: 'Number of Individual Trophies per Division:'
+
+				SimpleLabel:
+					text: 'Highlight color for Individual Trophy winners: '
+
+				SimpleLabel:
+					text: 'Number of Team Trophies per Division:'
+
+				SimpleLabel:
+					text: 'Highlight color for Team Trophy winners: '
+
+			StackLayout:
+				orientation: 'lr-tb'
+				padding: 10
+				spacing: 10
+
+				SimpleInput:
+					id: input_tourny_name 
+
+				SimpleInput:
+					id: input_tourny_date 
+
+				SimpleInput:
+					id: input_head_td_nam 
+
+				SimpleInput:
+					id: input_num_players
+
+				SimpleInput:
+					id: input_num_players_to_date
+
+				SimpleInput:
+					id: input_num_indi_trophy_winners
+
+				ColorButton:
+					id: input_color_indi_trophies
+					on_release: root.choose_color(self)
+
+				SimpleInput:
+					id: input_num_team_trophy_winners
+
+				ColorButton:
+					id: input_color_team_trophies
+					on_release: root.choose_color(self)

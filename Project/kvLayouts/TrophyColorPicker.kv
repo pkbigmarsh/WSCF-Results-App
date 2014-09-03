@@ -1,0 +1,15 @@
+#:kivy 1.8.0
+
+<TrophyColorPicker>:
+	color_picker: color_picker
+	BoxLayout:
+	    size: root.size
+	    pos: root.pos
+		orientation: "horizontal"
+		Button:
+			text: "Done"
+			on_release: root.done(root)
+
+		ColorPicker:
+			id: color_picker
+
