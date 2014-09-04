@@ -30,21 +30,23 @@ def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_hi
     for i in range(0, len(result.headers)):
         myCanvas.drawString(columns[i], y, result.headers[i])
 
-    y -= 12 * POINT
+    y -= LINE
 
     num_trophies = 0
     next = result.getNext()
+    new_page = False
     while(next != None):
         if (y < (.5 * INCH)):
-            y = top
-            myCanvas.showPage()
+            new_page = True
 
-        if num_trophies < num_trophy_winners:
+        if (num_trophies < int(num_trophy_winners)) == True:
             num_trophies += 1
+
             myCanvas.setStrokeColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
             myCanvas.setFillColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
-            myCanvas.rect(columns[0], y - 12, columns[6] - columns[6], 12, 1, 1)
 
+
+            myCanvas.rect(columns[0] - 3, y - 3, columns[6] - columns[0] - 2, LINE + 1, 1, 1)
 
             myCanvas.setStrokeColorRGB(0, 0, 0)
             myCanvas.setFillColorRGB(0, 0, 0)
@@ -53,9 +55,14 @@ def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_hi
 
         status = result.getItem("St", next)
         if(status != None and status != "Out"):
+            if new_page == True:
+                y = top
+                myCanvas.showPage()
+                new_page = False
+
             for i in range(0, len(next)):
                 myCanvas.drawString(columns[i], y, next[i])
-            y -= 12 * POINT
+            y -= LINE
 
         next = result.getNext()
 
@@ -112,10 +119,10 @@ def printTeamStandings(myCanvas, startTop, filepath, num_trophy_winners, trophy_
         else:
             ignore += 1
 
-    y -= 12 * POINT
+    y -= LINE
 
     ignore = 0
-
+    num_trophies = 0
     line = teamResult.getNext()
     while(line != None):
         if(y < MARGIN_BOTTOM):
@@ -132,6 +139,18 @@ def printTeamStandings(myCanvas, startTop, filepath, num_trophy_winners, trophy_
             line = teamResult.getNext()
             continue
 
+        if (num_trophies < int(num_trophy_winners)) and (playerCount == 0):
+            num_trophies += 1
+
+            myCanvas.setStrokeColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
+            myCanvas.setFillColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
+
+
+            myCanvas.rect(columns[0] - 3, y - 3, columns[3] - columns[0] - 2, LINE + 1, 1, 1)
+
+            myCanvas.setStrokeColorRGB(0, 0, 0)
+            myCanvas.setFillColorRGB(0, 0, 0)
+
         ignore = 0
         for i in range(0, len(line)):
             if(teamResult.headers[i] in IGNORE_TEAM):
@@ -139,7 +158,7 @@ def printTeamStandings(myCanvas, startTop, filepath, num_trophy_winners, trophy_
             else:
                 myCanvas.drawString(columns[i - ignore], y, line[i])
 
-        y -= 12 * POINT
+        y -= LINE
 
         line = teamResult.getNext()
 

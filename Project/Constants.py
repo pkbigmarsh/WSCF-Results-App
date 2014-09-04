@@ -1,4 +1,5 @@
 POINT 						= 1
+LINE 						= 15* POINT
 INCH 						= 72
 WIDTH 						= 11 * INCH
 HEIGHT 						= 8.5 * INCH
