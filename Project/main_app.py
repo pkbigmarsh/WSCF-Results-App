@@ -28,8 +28,8 @@ class DataScreenManager(ScreenManager):
     tournament_name             = StringProperty("")
     tournament_date             = StringProperty(time.strftime("%m/%d/%Y"))
     head_td_name                = StringProperty("")
-    num_players                 = StringProperty(None)
-    num_players_to_date         = StringProperty(None)
+    num_players                 = StringProperty("-1")
+    num_players_to_date         = StringProperty("-1")
 
     num_indi_trophy_winners     = StringProperty("0")
     num_team_trophy_winners     = StringProperty("0")
@@ -37,6 +37,24 @@ class DataScreenManager(ScreenManager):
     team_trophy_highlight       = ListProperty([])
 
     player_identification_list  = ListProperty([])
+
+    def restart(self):
+        self.i_file_results              = []
+        self.t_file_results              = []
+        self.tournament_name             = ""
+        self.tournament_date             = time.strftime("%m/%d/%Y")
+        self.head_td_name                = ""
+        self.num_players                 = "-1"
+        self.num_players_to_date         = "-1"
+
+        self.num_indi_trophy_winners     = "0"
+        self.num_team_trophy_winners     = "0"
+        self.indi_trophy_highlight       = []
+        self.team_trophy_highlight       = []
+
+        self.player_identification_list  = []
+
+        self.current = 'main'
 
 class WscfApp(App):
     def build(self):

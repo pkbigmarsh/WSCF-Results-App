@@ -29,14 +29,14 @@ class HeaderScreen(Screen):
     current_color_label             = ObjectProperty(None)
 
     def enter_screen(self):
-        if self.manager.num_players == None:
+        if int(self.manager.num_players) == -1:
             count = 0
             for result_file in self.manager.i_file_results:
                 count += file_length(result_file.id) - 1 # I need the -1 to counteract the header in a csv file
 
             self.manager.num_players = str(count)
 
-        if self.manager.num_players_to_date == None:
+        if int(self.manager.num_players_to_date) == -1:
             try:
                 num_players_file = open('./Number_of_players_to_date.txt')
                 self.manager.num_players_to_date = str(int(float(num_players_file.readline())) + int(float(self.manager.num_players)))

@@ -1,11 +1,15 @@
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics 
 from reportlab.pdfbase.ttfonts import TTFont  
+from kivy.logger import Logger
 from Constants import *
 from CSVReader import *
-from kivy.logger import Logger
+from PlayerIdenfication import *
+import copy
 
-def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_highlight):
+def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_highlight, player_identification):
+    player_ident = copy.copy(player_identification)
+
     columns = [
     .20 * INCH,
     .5 * INCH,
@@ -32,9 +36,18 @@ def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_hi
 
     y -= LINE
 
+    highlights = []
+    descriptions = []
+
+    if int(num_trophy_winners) > 0:
+        highlights.append(trophy_highlight)
+        descriptions.append("Trophy Winners")
+
     num_trophies = 0
     next = result.getNext()
     new_page = False
+    highlight_width = columns[6] - columns[0]
+
     while(next != None):
         if (y < (.5 * INCH)):
             new_page = True
@@ -42,29 +55,59 @@ def printIndividual(myCanvas, left, top, filepath, num_trophy_winners, trophy_hi
         if (num_trophies < int(num_trophy_winners)) == True:
             num_trophies += 1
 
-            myCanvas.setStrokeColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
-            myCanvas.setFillColorRGB(trophy_highlight[0], trophy_highlight[1], trophy_highlight[2])
-
-
-            myCanvas.rect(columns[0] - 3, y - 3, columns[6] - columns[0] - 2, LINE + 1, 1, 1)
-
-            myCanvas.setStrokeColorRGB(0, 0, 0)
-            myCanvas.setFillColorRGB(0, 0, 0)
-
-
+            highlight(myCanvas, columns[0], y, highlight_width, trophy_highlight)
 
         status = result.getItem("St", next)
+        name = result.getItem("Name", next)
         if(status != None and status != "Out"):
             if new_page == True:
+                draw_highlight_key(myCanvas, highlights, descriptions)
+
+                highlights = []
+                descriptions = []
                 y = top
                 myCanvas.showPage()
                 new_page = False
+
+            for player in player_ident:
+                if player.name == name:
+
+                    if player.description in descriptions:
+                        player.col = highlights[descriptions.index(player.description)]
+                    else:
+                        highlights.append(player.col)
+                        descriptions.append(player.description)
+
+                    highlight(myCanvas, columns[0], y, highlight_width, player.col)
+
+                    player_ident.remove(player)
 
             for i in range(0, len(next)):
                 myCanvas.drawString(columns[i], y, next[i])
             y -= LINE
 
         next = result.getNext()
+
+    if len(highlights) > 0:
+        draw_highlight_key(myCanvas, highlights, descriptions)
+
+def highlight(canvas, x, y, width, color):
+    canvas.setStrokeColorRGB(color[0], color[1], color[2])
+    canvas.setFillColorRGB(color[0], color[1], color[2])
+
+    canvas.rect(x - 3, y - 3, width - 2, LINE + 1, 1, 1)
+
+    canvas.setStrokeColorRGB(0, 0, 0)
+    canvas.setFillColorRGB(0, 0, 0)
+
+def draw_highlight_key(myCanvas, colors, descriptions):
+    y = .5 * INCH - LINE
+    x = .3 * INCH
+    next = (WIDTH - INCH) / len(descriptions)
+    for i in range(0, len(descriptions)):
+        highlight(myCanvas, x, y, LINE, colors[i])
+        myCanvas.drawString(x + LINE + 2, y, descriptions[i])
+        x += next
 
 def printTeamHeader(myCanvas, division):
     left = MARGIN_LEFT + INCH * 2
@@ -161,6 +204,12 @@ def printTeamStandings(myCanvas, startTop, filepath, num_trophy_winners, trophy_
         y -= LINE
 
         line = teamResult.getNext()
+
+    highlights = [trophy_highlight]
+    descriptions = ["Trophy Winners"]
+
+    if len(highlights) > 0:
+        draw_highlight_key(myCanvas, highlights, descriptions)
 
 
 def printResultHeader(myCanvas, tournyName, tournyDate, numParticipants, division, tournyDirector, numParticipantsToDate):

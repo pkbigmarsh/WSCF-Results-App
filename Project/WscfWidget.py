@@ -25,10 +25,15 @@ class WscfWidget(Screen):
     team_files = ObjectProperty(None)
 
     def enter_screen(self):
-        pass
+        if len(self.manager.i_file_results) == 0 and len(self.manager.t_file_results) == 0:
+            self.clear();
 
     def leave_screen(self):
         pass
+
+    def clear(self):
+        self.individual_files.clear_widgets()
+        self.team_files.clear_widgets()
 
     def load_file(self):
         Logger.info("load_file")
