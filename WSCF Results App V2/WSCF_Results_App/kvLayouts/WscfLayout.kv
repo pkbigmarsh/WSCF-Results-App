@@ -1,0 +1,95 @@
+#:kivy 1.8.0
+
+<WscfWidget>:
+	padding: 2
+	team_files: team_files
+	individual_files: individual_files
+	on_leave: root.leave_screen()
+	on_enter: root.enter_screen()
+
+	BoxLayout:
+		size: root.size
+		pos: root.pos
+		orientation: 'horizontal'
+		padding: 10
+		spacing: 20
+
+		ControlButtons:
+			SimpleButton:
+				text: "Load File"
+				on_release: root.load_file()
+
+			SimpleButton:
+				text: "Load Folder"
+				on_release:	root.load_folder()
+
+			SimpleButton:
+				text: "Next"
+				on_release: root.manager.current = root.manager.next()
+
+		BoxLayout:
+			size_hint: (.35, 1)
+			orientation: 'vertical'
+			FileLabel:
+				text: 'Individuals'
+
+			FileBox:
+				id: individual_files
+
+		BoxLayout:
+			size_hint: (.1, 1)
+			orientation: 'vertical'
+			padding: [10,120,10,100]
+			spacing: 50
+
+			SimpleButton:
+				text: 'Move Up'
+				on_release: root.move_up()
+
+			SimpleButton:
+				text: '<'
+				on_release: root.move_left()
+
+			SimpleButton:
+				text: 'X'
+				on_release: root.remove_file()
+
+			SimpleButton:
+				text: '>'
+				on_release: root.move_right()
+
+			SimpleButton:
+				text: 'Move Down'
+				on_release: root.move_down()
+
+		BoxLayout:
+			size_hint: (.35, 1)
+			orientation: 'vertical'
+			FileLabel:
+				text: 'Teams'
+
+			FileBox:
+				id: team_files
+
+<FileLabel@Label>:
+	size_hint: (1, .1)
+	font_size: 16
+	text_size: self.size
+	valign: 'top'
+	halign: 'center'
+	shorten: True
+
+<FileBox@StackLayout>:
+	orientation: 'lr-tb'
+	canvas.before:
+		Color:
+			rgba: 1,1,1,1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+<ResultFileLabel@Label>:
+	color: [0,0,0,1]
+    font_size: 12
+    size_hint_y: None
+    height: 30

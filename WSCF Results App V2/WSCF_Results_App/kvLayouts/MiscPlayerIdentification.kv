@@ -1,0 +1,134 @@
+#:kivy 1.8.0
+
+<MiscPlayerIdentificationScreen>:
+	on_enter: root.enter_screen()
+	on_leave: root.leave_screen()
+
+	player_list: player_list
+	selection_list: selection_list
+	description_list: description_list
+	color_list: color_list
+
+	BoxLayout:
+		size: root.size
+		pos: root.pos
+		orientation: 'horizontal'
+		padding: 10
+		spacing: 10
+
+		ControlButtons:
+			size_hint: (.2, 1)
+			SimpleButton:
+				text: 'Back'
+				on_release: root.manager.current = root.manager.previous()
+
+			SimpleButton:
+				text: 'Next'
+				on_release: root.manager.current = root.manager.next()
+
+		BoxLayout:
+			spacing: 2
+			size_hint: (.3, 1)
+			orientation: 'vertical'
+			TopLabel:
+				text: 'Players'
+
+			Button:
+				size_hint_y: None
+				height: 30
+				text: "Up"
+				on_release: root.moveUp()
+
+			BoxLayout:
+				size_hint:(1, .7)
+				id: player_list
+				orientation: 'vertical'
+				padding: 2
+				spacing: 2
+				canvas.before:
+					Color:
+						rgb: 1, 1, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+
+
+			Button:
+				size_hint_y: None
+				height: 30
+				text: "Down"
+				on_release: root.moveDown()
+
+		BoxLayout:
+			size_hint: (.1, 1)
+			orientation: 'vertical'
+			padding: [10,120,10,100]
+			spacing: 50
+
+			SimpleButton:
+				text: '<'
+				on_release: root.move_left()
+
+			SimpleButton:
+				text: '>'
+				on_release: root.move_right()
+
+		BoxLayout:
+			size_hint: (.3, 1)
+			orientation: 'vertical'
+			TopLabel:
+				text: 'Selections'
+
+			StackLayout:
+				id: selection_list
+				orientation: 'lr-tb'
+				padding: 2
+				spacing: 2
+				canvas.before:
+					Color:
+						rgb: 1, 1, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+
+		BoxLayout:
+			size_hint: (.3, 1)
+			orientation: 'vertical'
+			TopLabel:
+				text: 'Descriptions'
+
+			StackLayout:
+				id: description_list
+				orientation: 'lr-tb'
+				padding: 2
+				spacing: 2
+				canvas.before:
+					Color:
+						rgb: 1, 1, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+
+		BoxLayout:
+			size_hint: (.3, 1)
+			orientation: 'vertical'
+			TopLabel:
+				text: 'Colors'
+
+			StackLayout
+				id: color_list
+				orientation: 'lr-tb'
+				padding: 2
+				spacing: 2
+				canvas.before:
+					Color:
+						rgb: 1, 1, 1
+					Rectangle:
+						pos: self.pos
+						size: self.size
+
+<PlayerIdentificationLabel@Label>:
+	size_hint_y: None
+	color: [0,0,0,1]
+	font_size: 12
+	height: 30

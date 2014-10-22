@@ -1,0 +1,36 @@
+#:kivy 1.8.0
+
+<SaveScreen>:
+	on_enter: root.enter_screen()
+	on_leave: root.leave_screen()
+
+	BoxLayout:
+		size: root.size
+		pos: root.pos
+		orientation: 'horizontal'
+		padding: 10
+		spacing: 20
+
+		ControlButtons:
+			size_hint: (.2, 1)
+			SimpleButton:
+				text: 'Back'
+				on_release: root.manager.current = root.manager.previous()
+
+		BoxLayout:
+			size: root.size
+			pos: root.pos
+			orientation: 'vertical'
+			padding: 10
+			spacing: 20
+			SimpleButton:
+				text: 'Save'
+				on_release: root.save()
+
+			SimpleButton:
+				text: 'New'
+				on_release: root.new()
+
+			SimpleButton:
+				text: 'Attach PDF'
+				on_release: root.attach()
